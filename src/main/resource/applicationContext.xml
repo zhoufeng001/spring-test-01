@@ -32,6 +32,14 @@
        		</property>
        		<property name="targetName" value="personService" />  
        </bean>
+       
+       <bean id="personServiceHSF" class="com.spring.factorybean.ZFFactoryBean">
+			<property name="interfaceName" value="com.spring.service.PersonService" />
+			<property name="target"  ref="personService"/>
+       </bean>
+       
+       <!-- Bean监听 -->
+       <bean class="com.spring.listener.ZFBeanPostProcessor" id="zfBeanPostProcessor" />
 		
 		
 		

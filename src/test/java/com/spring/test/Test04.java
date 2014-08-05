@@ -4,20 +4,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
-
-public class Test03 {
-
-    @Test
-    public void test01() {
-
-    }
+public class Test04 {
 
     public static int i = 0;
 
     public static void main(String[] args) {
-        ScheduledExecutorService threadPoll = Executors.newScheduledThreadPool(5);
-        threadPoll.scheduleAtFixedRate(new Runnable() {
+
+        ScheduledExecutorService threadPoll = Executors.newScheduledThreadPool(10);
+
+        threadPoll.scheduleWithFixedDelay(new Runnable() {
 
             public void run() {
                 System.out.println("begin...");
@@ -39,4 +34,5 @@ public class Test03 {
         }, 5, 2, TimeUnit.SECONDS);
 
     }
+
 }

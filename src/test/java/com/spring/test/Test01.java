@@ -14,73 +14,80 @@ import com.spring.service.PersonService;
 
 public class Test01 {
 
-	ClassPathXmlApplicationContext context ;
-	ConfigurableListableBeanFactory beanFactory ;
+    ClassPathXmlApplicationContext  context;
+    ConfigurableListableBeanFactory beanFactory;
 
-	@Before
-	public void init(){
-		context = new ClassPathXmlApplicationContext("applicationContext.xml") ;
-		beanFactory = context.getBeanFactory() ;
-	}
+    @Before
+    public void init() {
+        context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        beanFactory = context.getBeanFactory();
+    }
 
+    @Test
+    public void test01() {
 
-	@Test
-	public void test01(){
+        PersonService ps = context.getBean("personService", PersonService.class);
 
-		PersonService ps = context.getBean("personService" , PersonService.class);
+        ps.sayHello();
 
-		ps.sayHello(); 
+        String name = ps.getName();
 
-		String name = ps.getName() ;
+        System.out.println(name);
+    }
 
-		System.out.println(name);
-	}
+    @Test
+    public void test02() {
+        PersonService ps = context.getBean("personServiceByLog", PersonService.class);
+        ps.sayHello();
 
-	@Test
-	public void test02(){
-		PersonService ps = context.getBean("personServiceByLog" , PersonService.class) ;
-		ps.sayHello();
+        String name = ps.getName();
 
-		String name = ps.getName() ;
+        System.out.println(name);
 
-		System.out.println(name);
+    }
 
-	}
+    @Test
+    public void test03() {
+        beanFactory.addBeanPostProcessor(new ZFBeanProcessor());
+        PersonService ps = beanFactory.getBean("personServiceByLog", PersonService.class);
+        ps.sayHello();
+        String name = ps.getName();
+        System.out.println(name);
+    }
 
-	@Test
-	public void test03(){
-		beanFactory.addBeanPostProcessor(new ZFBeanProcessor());
-		PersonService ps = beanFactory.getBean("personServiceByLog" , PersonService.class) ;
-		ps.sayHello();
-		String name = ps.getName() ;
-		System.out.println(name);
-	}
+    @Test
+    public void test04() {
+        ProxyFactoryBean factoryBean = context.getBean("&personServiceByLog", ProxyFactoryBean.class);
+        PersonService ps = (PersonService) factoryBean.getObject();
+        String name = ps.getName();
+        System.out.println(name);
 
+    }
 
-	@Test
-	public void test04(){
-		ProxyFactoryBean factoryBean = context.getBean("&personServiceByLog" , ProxyFactoryBean.class) ;
-		PersonService ps = (PersonService) factoryBean.getObject() ;
-		String name = ps.getName() ;
-		System.out.println(name);
+    @Test
+    public void test05() {
+        ClassPathResource resource = new ClassPathResource("applicationContext.xml");
+        DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(factory);
+        reader.loadBeanDefinitions(resource);
 
-	}
-	
-	@Test
-	public void test05(){
-		ClassPathResource resource = new ClassPathResource("applicationContext.xml");
-		DefaultListableBeanFactory factory = new DefaultListableBeanFactory() ;
-		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(factory) ; 
-		reader.loadBeanDefinitions(resource) ;
-		
-		PersonService ps = factory.getBean("personService" , PersonService.class);
-		
-		ps.sayHello(); 
+        PersonService ps = factory.getBean("personService", PersonService.class);
 
-		String name = ps.getName() ;
- 
-		System.out.println(name);
-	}
+        ps.sayHello();
 
-	
+        String name = ps.getName();
+
+        System.out.println(name);
+    }
+
+    @Test
+    public void test06() {
+        PersonService ps = context.getBean("personServiceHSF", PersonService.class);
+
+        ps.sayHello();
+
+        String name = ps.getName();
+
+        System.out.println(name);
+    }
 }
