@@ -1,5 +1,8 @@
 package com.spring.test;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.aop.framework.ProxyFactoryBean;
@@ -82,12 +85,29 @@ public class Test01 {
 
     @Test
     public void test06() {
-        PersonService ps = context.getBean("personServiceHSF", PersonService.class);
+        PersonService ps = context.getBean("zfPersonService", PersonService.class);
 
         ps.sayHello();
 
         String name = ps.getName();
 
         System.out.println(name);
+    }
+
+    @Test
+    public void test07() {
+        String temp = "</ABFDFG style=\"font-family:宋体\">1234";
+        // 标签的匹配
+        String tagRegx = "</*[A-Z].*?>";
+        Pattern p = null;
+        Matcher matcher = null;
+        p = Pattern.compile(tagRegx);
+        matcher = p.matcher(temp);
+        if (matcher.find()) {
+            String value = matcher.group(0);
+            temp = temp.replaceFirst(value, value.toLowerCase());
+        }
+
+        System.out.println(temp);
     }
 }

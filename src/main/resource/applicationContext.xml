@@ -12,12 +12,10 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-3.1.xsd">
            
-           
-       <bean id="personService" class="com.spring.service.impl.PersonServiceImpl" scope="prototype">
-       		<property name="name" value="is_zhoufeng" />
-       </bean>  
+      
        
        <bean id="logInteceptor" class="com.spring.intercept.LogInterceptor"  />
+       <bean id="ZFMethodAdvice" class="com.spring.advice.ZFMethodAdvice"  />
        
        <bean id="personServiceByLog" class="org.springframework.aop.framework.ProxyFactoryBean">
        		<property name="proxyInterfaces">
@@ -28,12 +26,18 @@
        		<property name="interceptorNames">
        			<list>
        				<value>logInteceptor</value>
+       				<value>ZFMethodAdvice</value>
        			</list>
        		</property>
        		<property name="targetName" value="personService" />  
        </bean>
        
-       <bean id="personServiceHSF" class="com.spring.factorybean.ZFFactoryBean">
+            
+       <bean id="personService" class="com.spring.service.impl.PersonServiceImpl" scope="prototype">
+       		<property name="name" value="is_zhoufeng" />
+       </bean>  
+       
+       <bean id="zfPersonService" class="com.spring.factorybean.ZFFactoryBean">
 			<property name="interfaceName" value="com.spring.service.PersonService" />
 			<property name="target"  ref="personService"/>
        </bean>

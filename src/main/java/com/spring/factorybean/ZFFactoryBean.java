@@ -10,9 +10,13 @@ import org.springframework.beans.factory.InitializingBean;
 
 public class ZFFactoryBean implements FactoryBean<Object>, InitializingBean, DisposableBean {
 
+    // 被代理对象实现的接口名（在使用Proxy时需要用到，用于决定生成的代理对象类型）
     private String interfaceName;
+
+    // 被代理的对象
     private Object target;
 
+    // 生成的代理对象
     private Object proxyObj;
 
     public void destroy() throws Exception {
@@ -27,10 +31,10 @@ public class ZFFactoryBean implements FactoryBean<Object>, InitializingBean, Dis
                                               public Object invoke(Object proxy, Method method, Object[] args)
                                                                                                               throws Throwable {
                                                   System.out.println("method:" + method.getName());
-                                                  System.out.println("HSF invoke...");
-                                                  method.invoke(target, args);
-                                                  System.out.println("HSF success...");
-                                                  return null;
+                                                  System.out.println("Method before...");
+                                                  Object result = method.invoke(target, args);
+                                                  System.out.println("Method after...");
+                                                  return result;
                                               }
                                           });
 
@@ -64,14 +68,6 @@ public class ZFFactoryBean implements FactoryBean<Object>, InitializingBean, Dis
 
     public void setTarget(Object target) {
         this.target = target;
-    }
-
-    public Object getProxyObj() {
-        return proxyObj;
-    }
-
-    public void setProxyObj(Object proxyObj) {
-        this.proxyObj = proxyObj;
     }
 
 }
